@@ -1,0 +1,83 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["backend*", "agent*", "tools*", "evaluation*", "lab*", "observability*", "security*", "rag*"]
+
+[project]
+
+name = "agentforge"
+version = "0.1.0"
+description = "AI Agent Reliability & Evaluation Platform — build, test, evaluate, and monitor tool-using AI agents."
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+
+dependencies = [
+    # --- Web framework ---
+    "fastapi>=0.111",
+    "uvicorn[standard]>=0.30",
+    "pydantic>=2.7",
+    "pydantic-settings>=2.3",
+
+    # --- Database ---
+    "sqlalchemy[asyncio]>=2.0",
+    "asyncpg>=0.29",
+    "alembic>=1.13",
+
+    # --- Cache / queue ---
+    "redis>=5.0",
+
+    # --- HTTP client ---
+    "httpx>=0.27",
+
+    # --- AI / LLM ---
+    "openai>=1.30",
+    "tiktoken>=0.7",
+
+    # --- RAG ---
+    "sentence-transformers>=3.0",
+    "pgvector>=0.3",
+
+    # --- Observability ---
+    "loguru>=0.7",
+    "python-json-logger>=2.0",
+
+    # --- Utilities ---
+    "python-dotenv>=1.0",
+    "tenacity>=8.3",
+    "mcp>=1.2.0",
+    "ulid-py>=1.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.2",
+    "pytest-asyncio>=0.23",
+    "hypothesis>=6.100",
+    "pytest-cov>=5.0",
+    "respx>=0.21",
+    "freezegun>=1.5",
+    "black>=24.4",
+    "ruff>=0.4",
+    "mypy>=1.10",
+    "pre-commit>=3.7",
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+addopts = "-v --tb=short"
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W", "UP"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+plugins = ["pydantic.mypy"]
